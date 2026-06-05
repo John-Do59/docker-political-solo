@@ -7,7 +7,7 @@ Le projet dispose déjà :
 * d'un dépôt GitHub
 * d'une pipeline CI/CD GitHub Actions
 * d'une application conteneurisée avec Docker
-* d'un déploiement automatique sur VPS OVH
+* d'un déploiement automatique sur VPS OVH (8 Go RAM)
 * d'un reverse proxy Traefik
 * d'un environnement de production fonctionnel
 
@@ -20,262 +20,48 @@ L'objectif est maintenant de renforcer :
 
 ---
 
-# Phase 1 — Renforcement DevSecOps
+# Sprints d'Implémentation
 
-## Branche : feature/gitleaks
+## Sprint 1 — DevSecOps
 
-### Objectif
+1. `feature/gitleaks` (Détecter les secrets exposés)
+2. `feature/codeql-security` (Analyse statique du code)
+3. `feature/trivy-image-scan` (Scan d'images Docker)
 
-Détecter les secrets exposés dans le dépôt Git.
+## Sprint 2 — Monitoring Infrastructure
 
-### Tâches
+1. `feature/node-exporter` (Collecter métriques système VPS)
+2. `feature/prometheus-monitoring` (Centraliser les métriques)
+3. `feature/grafana-dashboard` (Visualiser les métriques)
+4. `feature/cadvisor-monitoring` (Superviser conteneurs Docker)
 
-* Ajouter Gitleaks dans GitHub Actions
-* Bloquer la pipeline en cas de fuite de secret
-* Vérifier les faux positifs
+## Sprint 3 — Supervision
 
-### Résultat attendu
+1. `feature/uptime-kuma` (Surveiller disponibilité des services)
 
-* Détection automatique des clés API
-* Détection des tokens GitHub
-* Détection des mots de passe accidentellement versionnés
+## Sprint 4 — Centralisation des Logs
 
----
-
-## Branche : feature/codeql-security
-
-### Objectif
-
-Mettre en place une analyse statique de sécurité du code.
-
-### Tâches
-
-* Activer GitHub CodeQL
-* Configurer l'analyse Python
-* Vérifier les alertes GitHub Security
-
-### Résultat attendu
-
-* Détection de vulnérabilités potentielles
-* Rapports de sécurité directement dans GitHub
+1. `feature/loki-logging` (Stocker logs applicatifs)
+2. `feature/promtail-logging` (Collecter logs Docker)
 
 ---
 
-## Branche : feature/trivy-scan
+# Architecture Finale Recommandée
 
-### Objectif
-
-Scanner les images Docker avant leur publication.
-
-### Tâches
-
-* Ajouter Trivy à la pipeline
-* Scanner les images générées
-* Bloquer les vulnérabilités critiques
-
-### Résultat attendu
-
-Pipeline :
-
-Tests
-→ Trivy
-→ Build Docker
-→ Push Registry
-→ Deploy VPS
-
----
-
-# Phase 2 — Monitoring Infrastructure
-
-## Branche : feature/node-exporter
-
-### Objectif
-
-Collecter les métriques système du VPS.
-
-### Tâches
-
-* Ajouter Node Exporter au docker-compose.monitoring.yml
-* Exposer les métriques à Prometheus
-
-### Métriques collectées
-
-* CPU
-* RAM
-* Disque
-* Réseau
-* Charge système
-
-### Résultat attendu
-
-Le VPS devient observable par Prometheus.
-
----
-
-## Branche : feature/prometheus-monitoring
-
-### Objectif
-
-Centraliser les métriques de supervision.
-
-### Tâches
-
-* Déployer Prometheus
-* Configurer les targets
-* Ajouter Node Exporter
-
-### Résultat attendu
-
-Prometheus collecte les métriques du VPS.
-
----
-
-## Branche : feature/grafana-dashboard
-
-### Objectif
-
-Visualiser les métriques via des dashboards.
-
-### Tâches
-
-* Déployer Grafana
-* Connecter Prometheus
-* Importer les dashboards recommandés
-
-### Dashboards
-
-#### VPS Monitoring
-
-* CPU
-* RAM
-* Disque
-* Réseau
-
-#### Infrastructure Monitoring
-
-* Disponibilité
-* Consommation globale
-
-### Résultat attendu
-
-Visualisation en temps réel de l'état du serveur.
-
----
-
-## Branche : feature/cadvisor
-
-### Objectif
-
-Superviser les conteneurs Docker.
-
-### Tâches
-
-* Déployer cAdvisor
-* Connecter Prometheus
-
-### Métriques collectées
-
-* CPU des conteneurs
-* RAM des conteneurs
-* I/O disque
-* Réseau
-
-### Résultat attendu
-
-Monitoring détaillé des conteneurs.
-
----
-
-# Phase 3 — Supervision
-
-## Branche : feature/uptime-kuma
-
-### Objectif
-
-Surveiller la disponibilité des services.
-
-### Tâches
-
-* Déployer Uptime Kuma
-* Configurer les endpoints
-
-### Services surveillés
-
-* Frontend
-* Backend API
-* Grafana
-* Traefik
-
-### Alertes
-
-* Email
-* Discord
-* Telegram (optionnel)
-
-### Résultat attendu
-
-Notification automatique en cas d'indisponibilité.
-
----
-
-# Phase 4 — Centralisation des Logs (Optionnelle)
-
-## Branche : feature/loki
-
-### Objectif
-
-Stocker les logs applicatifs.
-
-### Tâches
-
-* Déployer Loki
-* Configurer le stockage
-
-### Résultat attendu
-
-Centralisation des logs.
-
----
-
-## Branche : feature/promtail
-
-### Objectif
-
-Collecter les logs Docker.
-
-### Tâches
-
-* Déployer Promtail
-* Connecter Loki
-
-### Résultat attendu
-
-Visualisation des logs dans Grafana.
-
----
-
-# Architecture Finale
-
-GitHub
-│
-├── Tests Automatisés
-├── Gitleaks
-├── CodeQL
-├── Trivy
-└── GitHub Actions
-│
-▼
 VPS OVH
 │
 ├── Traefik
-├── Application
-├── Prometheus
-├── Grafana
+├── Django
+├── FastAPI
+├── PostgreSQL
+│
 ├── Node Exporter
 ├── cAdvisor
+├── Prometheus
+├── Grafana
 ├── Uptime Kuma
-├── Loki (optionnel)
-└── Promtail (optionnel)
+├── Loki
+└── Promtail
 
 ---
 
@@ -284,45 +70,20 @@ VPS OVH
 ## docker-compose.yml
 
 Services métier :
-
-* Application
-* Base de données
+* Application (Django, FastAPI)
+* Base de données (PostgreSQL)
 * Traefik
 
 ## docker-compose.monitoring.yml
 
 Services d'observabilité :
-
 * Prometheus
 * Grafana
 * Node Exporter
 * cAdvisor
 * Uptime Kuma
-* Loki (optionnel)
-* Promtail (optionnel)
-
----
-
-# Priorité d'Implémentation
-
-## Priorité Haute
-
-1. Gitleaks
-2. CodeQL
-3. Trivy
-
-## Priorité Moyenne
-
-4. Node Exporter
-5. Prometheus
-6. Grafana
-7. cAdvisor
-
-## Priorité Basse
-
-8. Uptime Kuma
-9. Loki
-10. Promtail
+* Loki
+* Promtail
 
 ---
 
@@ -337,5 +98,5 @@ Le projet disposera :
 * d'un monitoring système
 * d'un monitoring Docker
 * d'une supervision de disponibilité
-* d'une observabilité complète
+* d'une centralisation complète des logs
 * d'une architecture DevSecOps moderne
