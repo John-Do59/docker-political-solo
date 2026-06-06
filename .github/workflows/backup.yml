@@ -10,7 +10,7 @@ on:
       verify_only:
         description: "Vérifier uniquement le dernier backup (sans créer un nouveau)"
         required: false
-        default: "false"
+        default: false
         type: boolean
 
 jobs:
