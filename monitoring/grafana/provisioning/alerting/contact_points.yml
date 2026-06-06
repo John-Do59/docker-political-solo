@@ -3,7 +3,8 @@ apiVersion: 1
 contactPoints:
   # ────────────────────────────────────────────
   # Discord — Webhook
-  # Remplacer DISCORD_WEBHOOK_URL par le vrai webhook dans les secrets
+  # Créer un webhook : Serveur Discord → Paramètres → Intégrations → Webhooks
+  # Renseigner l'URL dans le secret GitHub : GRAFANA_DISCORD_WEBHOOK_URL
   # ────────────────────────────────────────────
   - orgId: 1
     name: Discord Alerting
@@ -21,8 +22,35 @@ contactPoints:
         disableResolveMessage: false
 
   # ────────────────────────────────────────────
+  # Telegram — Bot API
+  # Prérequis :
+  #   1. Créer un bot via @BotFather sur Telegram → noter le BOT_TOKEN
+  #   2. Démarrer une conversation avec le bot, puis récupérer le CHAT_ID via :
+  #      https://api.telegram.org/bot<BOT_TOKEN>/getUpdates
+  # Renseigner les secrets GitHub :
+  #   - GRAFANA_TELEGRAM_BOT_TOKEN  → le token donné par @BotFather
+  #   - GRAFANA_TELEGRAM_CHAT_ID   → votre chat_id numérique (ex: -100123456789)
+  # ────────────────────────────────────────────
+  - orgId: 1
+    name: Telegram Alerting
+    receivers:
+      - uid: telegram-receiver
+        type: telegram
+        settings:
+          bottoken: "${GRAFANA_TELEGRAM_BOT_TOKEN}"
+          chatid: "${GRAFANA_TELEGRAM_CHAT_ID}"
+          message: |
+            🚨 <b>[{{ .Status | toUpper }}]</b> {{ .CommonLabels.alertname }}
+            <b>Sévérité :</b> {{ .CommonLabels.severity }}
+            <b>Résumé :</b> {{ .CommonAnnotations.summary }}
+            <b>Détail :</b> {{ .CommonAnnotations.description }}
+        parse_mode: HTML
+        disableResolveMessage: false
+
+  # ────────────────────────────────────────────
   # Email SMTP
-  # Variables configurées dans grafana.ini ou env
+  # Variables configurées via secrets GitHub :
+  #   - GF_SMTP_USER, GF_SMTP_PASSWORD, GRAFANA_ALERT_EMAIL
   # ────────────────────────────────────────────
   - orgId: 1
     name: Email Alerting
