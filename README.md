@@ -35,6 +35,7 @@ Predil'ection est une **Application web** conçue pour prédire les résultats d
 ## 🏗️ Architecture
 
 ### Sources de données
+
 - **Données électorales** : Récupérées depuis des sources officielles telles que data.gouv.fr.
 - **Données démographiques** : Intégration de données démographiques (INSEE) pour améliorer les prédictions.
 - **Données géographiques** : Utilisation de données géographiques pour la visualisation sur la carte interactive.
@@ -54,16 +55,19 @@ Predil'ection est une **Application web** conçue pour prédire les résultats d
 L'application est déployée sur un VPS (Virtual Private Server) avec une architecture sécurisée, isolée et hautement supervisée :
 
 **Sécurité & Infrastructure de base :**
+
 - 🔒 **[Pare-feu (UFW)](docs/firewall.md)** et 🛡️ **[Fail2Ban](docs/fail2ban.md)** : Protection contre le bruteforce SSH via journal systemd.
 - 🐳 **[Docker](docs/docker.md)** & 🚦 **[Traefik](docs/traefik.md)** : Isolation complète, Reverse Proxy, et certificats SSL (Let's Encrypt).
 
-**DevSecOps & CI/CD :** 
+**DevSecOps & CI/CD :**
 Le projet utilise un pipeline GitHub Actions automatisé intégrant des contrôles de sécurité stricts :
+
 - 🕵️ **Gitleaks** : Détection de secrets et clés API.
 - 🛡️ **CodeQL** : Analyse statique de sécurité (SAST) du code.
 - 📦 **Trivy** : Scan de vulnérabilités des images Docker avant la mise en production.
 
 **Observabilité & Supervision :**
+
 - 📈 **Prometheus & Grafana** : Monitoring des ressources du VPS (via **Node Exporter**) et des conteneurs (via **cAdvisor**).
 - 📋 **Loki & Promtail** : Centralisation et indexation de tous les logs sans avoir à se connecter en SSH.
 - 🚨 **Uptime Kuma** : Supervision de la disponibilité des services et APIs en temps réel.
@@ -129,6 +133,7 @@ Le projet utilise un pipeline GitHub Actions automatisé intégrant des contrôl
    git clone <url-du-repository>
    cd political-prediction
    ```
+
 2. **Créer un environnement virtuel**
 
    ```bash
@@ -137,16 +142,19 @@ Le projet utilise un pipeline GitHub Actions automatisé intégrant des contrôl
    # ou
    venv\Scripts\activate        # Sur Windows
    ```
+
 3. **Installer les dépendances**
 
    ```bash
    pip install -r requirements.txt
    ```
+
 4. **Configurer les variables d'environnement**
 
    Créez un fichier `.env` dans le dossier api et dans le dossier django_political_app avec les variables suivantes :
-   
+
    django_political_app/.env :
+
    ```env
    SECRET_KEY='Ici la secret key de Django'
     DEBUG=false
@@ -154,30 +162,35 @@ Le projet utilise un pipeline GitHub Actions automatisé intégrant des contrôl
     BASE_URL_LOCAL="l'url de fast api"
     BASE_URL="https://geo.api.gouv.fr"
    ```
+
 5. **Initialiser la base de données**
 
    ```bash
    cd data 
    ```
+
    exécutez df_election_2012 df_election_2017 full_df_final full_stat pour créer les tables et insérer les données dans la base de données.
 
    ```bash
    sudo -u postgres psql -c "CREATE DATABASE predilection;"
    sudo -u postgres psql -d predilection -f data/insert_communes.sql
    ```
+
 6. **Lancer l'application**
    fastapi :
+
    ```bash
    cd api
    uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
    ```
+
     django :
+
     ```bash
     cd django_political_app
     python manage.py collectstaticFévrier
     python manage.py runserver
     ```
-
 
 L'Application sera accessible sur : `http://127.0.0.1:8000/home/`
 
@@ -200,6 +213,7 @@ pytest --cov=django_political_app --cov=api/app --cov-report=term-missing --igno
 ```
 
 ### Monitoring du modèle de prédiction
+
 - **MLflow** : Utilisé pour suivre les expériences de machine learning, les métriques et les modèles. Accédez à l'interface MLflow pour visualiser les résultats des entraînements et les comparaisons entre les modèles.
 
 Exécutez MLflow avec la commande suivante :
@@ -212,17 +226,12 @@ python monitoring.py
 mlflow ui
 ```
 
-À noter que le monitoring du modèle est basé sur une version antérieure du projet, et que les données utilisées pour le monitoring ne sont pas à jour. Par conséquent, les résultats affichés dans MLflow peuvent ne pas refléter les performances actuelles du modèle de prédiction.
+À noter que le monitoring du modèle est basé sur une version antérieure du projet, et que les données utilisées pour le monitoring ne sont pas à jour. Par conséquent, les résultats affichés dans MLflow peuvent ne pas refléter les performances actuelles du modèle de prédiction
 ---
 
 ## 👥 Auteurs
 
 Ce projet a été développé par une équipe de trois développeurs :
-
-- **Flora Trecul** - [Github](https://github.com/Flora-Trecul)
-- **Ethan Puype** - [Github](https://github.com/NICHIKU)
-- **Souhaïb Massrour** - [Github](https://github.com/GutsSama)
-- **Alexandre Crestien** - [Github](https://github.com/AlexandreCrestien)
 
 **Contexte :** Projet de formation Développeur Data IA - Simplon
 
