@@ -42,7 +42,8 @@ services:
       # Provisioning alerting (alert rules, contact points, notification policies)
       - ./monitoring/grafana/provisioning/alerting:/etc/grafana/provisioning/alerting:ro
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${POSTGRES_PASSWORD:-admin} # Mot de passe par défaut
+      # Mot de passe admin Grafana — utiliser un secret dédié GRAFANA_ADMIN_PASSWORD
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-changeme_grafana}
       - GF_USERS_ALLOW_SIGN_UP=false
       # Unified alerting (activé par défaut depuis Grafana 9+)
       - GF_ALERTING_ENABLED=false
