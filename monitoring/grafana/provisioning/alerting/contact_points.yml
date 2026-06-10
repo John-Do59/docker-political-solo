@@ -38,6 +38,7 @@ contactPoints:
         type: telegram
         settings:
           bottoken: "${GRAFANA_TELEGRAM_BOT_TOKEN}"
+          # Rendu par scripts/render_grafana_alerting.sh au deploy (chat ID quoté)
           chatid: "${GRAFANA_TELEGRAM_CHAT_ID}"
           message: |
             🚨 <b>[{{ .Status | toUpper }}]</b> {{ .CommonLabels.alertname }}

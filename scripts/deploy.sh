@@ -28,6 +28,11 @@ export DOMAIN_NAME=$(echo "${DOMAIN_NAME:-localhost}" | sed -E 's|^https?://||' 
 echo " Connexion à GHCR..."
 echo "${GITHUB_TOKEN:-}" | docker login ghcr.io -u john-do59 --password-stdin 2>/dev/null || true
 
+# 3b. Rendre les contact points Grafana (chat ID Telegram en string YAML)
+if [[ -f scripts/render_grafana_alerting.sh ]]; then
+    bash scripts/render_grafana_alerting.sh
+fi
+
 # 4. Récupérer les nouvelles images depuis GHCR
 echo "📦 Pull des images depuis GHCR..."
 if [ -f "${MONITORING_FILE}" ]; then

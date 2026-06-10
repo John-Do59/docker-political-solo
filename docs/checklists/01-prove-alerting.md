@@ -7,9 +7,9 @@
 
 ## Prérequis
 
-- [ ] PR #47 et #48 mergées, deploy réussi sur le VPS
-- [ ] Secrets GitHub configurés : `GRAFANA_DISCORD_WEBHOOK_URL`, `GRAFANA_TELEGRAM_BOT_TOKEN`, `GRAFANA_TELEGRAM_CHAT_ID`
-- [ ] Grafana accessible : `https://grafana.<DOMAIN_NAME>`
+- [x] PR #47 et #48 mergées, deploy réussi sur le VPS
+- [x] Secrets GitHub configurés : `GRAFANA_DISCORD_WEBHOOK_URL`, `GRAFANA_TELEGRAM_BOT_TOKEN`, `GRAFANA_TELEGRAM_CHAT_ID`
+- [x] Grafana container `Up` sur le VPS (corrections SMTP + email + chat ID appliquées le 2026-06-10)
 
 ---
 
@@ -22,10 +22,9 @@ docker compose -f docker-compose.monitoring.yml logs grafana --tail=50 | grep -i
 ```
 
 Dans Grafana UI → **Alerting** → **Contact points** :
-- [ ] `Discord Alerting` présent
-- [ ] `Telegram Alerting` présent
-- [ ] Bouton **Test** Discord → message reçu
-- [ ] Bouton **Test** Telegram → message reçu
+- [x] `Discord Alerting` présent
+- [x] `Telegram Alerting` présent
+- [x] Test canaux via `bash scripts/test_alert_channels.sh` → Discord HTTP 204, Telegram OK (2026-06-10)
 
 ---
 
@@ -77,8 +76,19 @@ python3 scripts/setup_uptime_kuma.py
 
 ---
 
+## Scripts de validation (VPS)
+
+```bash
+# Test direct des canaux Discord + Telegram
+bash scripts/test_alert_channels.sh
+
+# Liste des contact points Grafana (API interne)
+bash scripts/test_grafana_contact_points.sh
+```
+
 ## Critère validé quand
 
-- [x] Discord + Telegram reçoivent une alerte **critical** déclenchée par Grafana
-- [ ] Date de validation : ___________
+- [x] Discord + Telegram reçoivent un message de test (canaux opérationnels)
+- [ ] Alerte **critical** Grafana en état Firing → Discord + Telegram (à valider via charge CPU ou règle test)
+- [ ] Date de validation complète : ___________
 - [ ] Validé par : ___________
