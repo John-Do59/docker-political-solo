@@ -93,6 +93,8 @@ env:
 | `DOMAIN_NAME` | Domaine principal |
 | `TRAEFIK_DASHBOARD_CREDENTIALS` | BasicAuth Traefik |
 | `GRAFANA_DISCORD_WEBHOOK_URL` | Webhook Discord alerting |
+| `GRAFANA_TELEGRAM_BOT_TOKEN` | Token du bot Telegram (@BotFather) |
+| `GRAFANA_TELEGRAM_CHAT_ID` | Chat ID Telegram pour les alertes |
 | `GRAFANA_ALERT_EMAIL` | Email pour alertes Grafana |
 | `GF_SMTP_USER` | Compte SMTP Grafana |
 | `GF_SMTP_PASSWORD` | Mot de passe SMTP Grafana |
@@ -112,6 +114,8 @@ SECRET_KEY=XXXX
 DOMAIN_NAME=yourdomain.com
 TRAEFIK_DASHBOARD_CREDENTIALS=admin:$hashed_password
 GRAFANA_DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+GRAFANA_TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
+GRAFANA_TELEGRAM_CHAT_ID=-100123456789
 GRAFANA_ALERT_EMAIL=alerts@yourdomain.com
 ```
 

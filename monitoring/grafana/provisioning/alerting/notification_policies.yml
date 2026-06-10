@@ -10,8 +10,12 @@ policies:
     group_interval: 5m
     repeat_interval: 4h
     routes:
-      # Alertes critiques → Discord + Email
+      # Alertes critiques → Discord + Telegram + Email
       - receiver: Discord Alerting
+        matchers:
+          - severity = critical
+        continue: true
+      - receiver: Telegram Alerting
         matchers:
           - severity = critical
         continue: true
