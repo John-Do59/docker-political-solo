@@ -54,8 +54,10 @@ services:
       - GF_SMTP_USER=${GF_SMTP_USER:-}
       - GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD:-}
       - GF_SMTP_FROM_ADDRESS=${GF_SMTP_FROM_ADDRESS:-grafana@localhost}
-      # Discord webhook injecté dans les contact points via variable d'env
+      # Contact points alerting (variables substituées dans les YAML provisionnés)
       - GRAFANA_DISCORD_WEBHOOK_URL=${GRAFANA_DISCORD_WEBHOOK_URL:-}
+      - GRAFANA_TELEGRAM_BOT_TOKEN=${GRAFANA_TELEGRAM_BOT_TOKEN:-}
+      - GRAFANA_TELEGRAM_CHAT_ID=${GRAFANA_TELEGRAM_CHAT_ID:-}
       - GRAFANA_ALERT_EMAIL=${GRAFANA_ALERT_EMAIL:-}
     networks:
       - predilection-net

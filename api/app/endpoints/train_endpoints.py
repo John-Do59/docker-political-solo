@@ -2,7 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, status
 from sqlalchemy.engine import Engine
 from app.db.database import engine  # On importe l'engine directement
 from app.schemas.train import TrainSettings
-from app.services.train import TrainService
+from app.services.train import TrainingService
 
 router = APIRouter(prefix="/train", tags=["train"])
 
@@ -21,7 +21,7 @@ async def launch_model_training(
         dict: Statut de la tâche
     """
     # On délègue la tâche au service en arrière-plan
-    background_tasks.add_task(TrainService.run_pipeline, settings, engine)
+    background_tasks.add_task(TrainingService.run_pipeline, settings, engine)
     
     return {
         "status": "processing",
