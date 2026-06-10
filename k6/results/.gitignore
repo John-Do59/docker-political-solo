@@ -1,0 +1,4 @@
+# Résultats bruts k6 (volumineux) — ne pas versionner
+*.json
+# Garder le template baseline
+!BASELINE.md
