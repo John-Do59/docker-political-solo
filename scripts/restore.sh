@@ -51,9 +51,7 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] Début de la restauration..."
 
 # ─── Décompression et restauration ───────────────────────────────────────────
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Décompression et import en cours..."
-gunzip -c "${BACKUP_FILE}" | psql \
-    --host="${POSTGRES_HOST}" \
-    --port="${POSTGRES_PORT}" \
+gunzip -c "${BACKUP_FILE}" | docker exec -i prediclection-db-container psql \
     --username="${POSTGRES_USER}" \
     --dbname="${POSTGRES_DB}" \
     --set ON_ERROR_STOP=1

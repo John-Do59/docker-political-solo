@@ -41,9 +41,7 @@ export PGPASSWORD="${POSTGRES_PASSWORD}"
 
 # ─── Dump + compression ───────────────────────────────────────────────────────
 log "Exécution de pg_dump..."
-if pg_dump \
-    --host="${POSTGRES_HOST}" \
-    --port="${POSTGRES_PORT}" \
+if docker exec -i prediclection-db-container pg_dump \
     --username="${POSTGRES_USER}" \
     --dbname="${POSTGRES_DB}" \
     --format=plain \
