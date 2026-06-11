@@ -49,7 +49,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          BACKUP_DIR: /var/backups/predilection
+          BACKUP_DIR: /home/amaury/docker-political/backups
           BACKUP_RETENTION: 7
 
       - name: Vérifier uniquement le dernier backup
@@ -64,7 +64,7 @@ jobs:
             cd /home/${{ secrets.VPS_USER }}/docker-political
             bash scripts/verify_backup.sh
         env:
-          BACKUP_DIR: /var/backups/predilection
+          BACKUP_DIR: /home/amaury/docker-political/backups
 
       - name: Lister les backups disponibles
         uses: appleboy/ssh-action@v1.2.0
@@ -75,7 +75,7 @@ jobs:
           port: 1455
           script: |
             echo " Backups disponibles :"
-            ls -lh /var/backups/predilection/backup_*.sql.gz 2>/dev/null || echo "Aucun backup trouvé."
+            ls -lh /home/amaury/docker-political/backups/backup_*.sql.gz 2>/dev/null || echo "Aucun backup trouvé."
             echo ""
             echo " Espace disque :"
-            df -h /var/backups/predilection 2>/dev/null || df -h /var/backups
+            df -h /home/amaury/docker-political/backups 2>/dev/null || df -h /home/amaury
